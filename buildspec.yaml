@@ -1,9 +1,14 @@
 version: 0.2
 
 phases:
+  build:
+    commands:
+      - ls -lah  # List files to check if lambda_function.zip is present
   post_build:
     commands:
+      - echo "Uploading ZIP to S3..."
       - aws s3 cp lambda_function.zip s3://passwordreset-bucket/
+      - echo "Updating AWS Lambda..."
       - aws lambda update-function-code --function-name password-link-generator --s3-bucket passwordreset-bucket --s3-key lambda_function.zip
 artifacts:
   files:
