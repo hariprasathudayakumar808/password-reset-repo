@@ -1,0 +1,10 @@
+version: 0.2
+
+phases:
+  post_build:
+    commands:
+      - aws s3 cp lambda_function.zip s3://passwordreset-bucket/
+      - aws lambda update-function-code --function-name password-link-generator --s3-bucket passwordreset-bucket --s3-key lambda_function.zip
+artifacts:
+  files:
+    - lambda_function.zip
